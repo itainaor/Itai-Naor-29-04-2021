@@ -29,7 +29,7 @@
       </button>
       <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
         <ng-container *ngFor="let currency of currencies">
-          <a class="dropdown-item" href="#" (click)="changeCurrency(currency)" [ngClass]="{'font-weight-bold': selectedCurrency?.name === currency?.name}">{{currency?.name}}</a>
+          <a class="dropdown-item" (click)="changeCurrency(currency)" [ngClass]="{'font-weight-bold': selectedCurrency?.name === currency?.name}">{{currency?.name}}</a>
         </ng-container>
       </div>
     </div>

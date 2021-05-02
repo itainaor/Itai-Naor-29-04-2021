@@ -31,8 +31,8 @@
       <tr>
         <td colspan="2"></td>
         <td colspan="1">
-          <span [tooltip]="storesSum | fieldSum: 'price' | currency: selectedCurrency.name">
-            Sum: {{storesSum | fieldSum: 'price' | currency: selectedCurrency.name}}
+          <span [tooltip]="storesSum | fieldSum: 'price'| currencyExchange: [defaultCurrency?.rate, selectedCurrency?.rate] | currency: selectedCurrency.name">
+            Sum: {{storesSum | fieldSum: 'price' | currencyExchange: [defaultCurrency?.rate, selectedCurrency?.rate] |  currency: selectedCurrency.name}}
           </span>
         </td>
       </tr>
