@@ -1,0 +1,130 @@
+<div class="purchase-by-item-table-wrapper">
+  <div class="d-flex justify-content-end mb-3">
+    <button type="button" class="btn btn-secondary add-item-btn" *ngIf="!isArchive" (click)="openModal(addItemTemplate)">
+      <i class="bi bi-plus"></i>
+      Add item
+    </button>
+  </div>
+  <table class="table table-responsive-sm table-hover">
+    <thead>
+    <tr class="table-primary">
+      <th scope="col" class="item-name-header">Item name</th>
+      <th scope="col" class="store-header">Store</th>
+      <th scope="col" class="price-header">Price</th>
+      <th scope="col" class="date-header">Delivery estimates</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngIf="items && items?.length === 0; else purchaseByItemTableTemplate">
+      <td colspan="5">There are no items yet.</td>
+    </tr>
+    <ng-template #purchaseByItemTableTemplate>
+      <tr *ngFor="let item of items | sortByDate: 'deliveryDate'">
+        <td class="ellipsis-text item-name">
+          <span [tooltip]="item?.name">{{item?.name}}</span>
+        </td>
+        <td class="ellipsis-text store">
+          <span [tooltip]="item?.store">{{item?.store}}</span>
+        </td>
+        <td class="ellipsis-text price">
+          <span  [tooltip]="item?.price | currencyExchange: [defaultCurrency?.rate, selectedCurrency?.rate] | currency: selectedCurrency.name">
+            {{item?.price | currencyExchange: [defaultCurrency?.rate, selectedCurrency?.rate] | currency: selectedCurrency.name}}
+          </span>
+        </td>
+        <td>
+          <span [tooltip]="item?.deliveryDate | date: 'dd/MM/yyyy'">
+            {{item?.deliveryDate | date: 'dd/MM/yyyy'}}
+          </span>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary" *ngIf="isArchive; else archiveBtnTemplate" (click)="markItemAsWaiting(item)">
+            Reactive
+          </button>
+          <ng-template #archiveBtnTemplate>
+            <button type="button" class="btn btn-primary" (click)="markItemAsArchive(item)">
+              Archive
+            </button>
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+
+    </tbody>
+  </table>
+</div>
+
+<ng-template #addItemTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add item</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="addItemFormGroup" (ngSubmit)="addItem()">
+      <div class="form-group item-name-wrapper">
+        <label for="itemName" class="label-control">Item name</label>
+        <input type="text" id="itemName" [typeahead]="products" [typeaheadOptionsLimit]="20" formControlName="itemName" class="form-control" autocomplete="off">
+        <div *ngIf="addItemFormGroup.controls['itemName'].invalid && (addItemFormGroup.controls['itemName'].dirty || addItemFormGroup.controls['itemName'].touched)"
+             class="alert alert-danger">
+          <div *ngIf="addItemFormGroup.controls['itemName'].errors.required">
+            Field is required
+          </div>
+          <div *ngIf="addItemFormGroup.controls['itemName'].errors.maxlength">
+            Max length is {{constants.ADD_ITEM_FORM.NAME_MAX_LEN}}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="store" class="label-control">Store</label>
+        <input type="text" id="store" formControlName="store" class="form-control" autocomplete="off">
+        <div *ngIf="addItemFormGroup.controls['store'].invalid && (addItemFormGroup.controls['store'].dirty || addItemFormGroup.controls['store'].touched)"
+             class="alert alert-danger">
+          <div *ngIf="addItemFormGroup.controls['store'].errors.required">
+            Field is required
+          </div>
+          <div *ngIf="addItemFormGroup.controls['store'].errors.maxlength">
+            Max length is {{constants.ADD_ITEM_FORM.STORE_MAX_LEN}}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="price" class="label-control">Price ({{constants.DEFAULT_CURRENCY}})</label>
+        <input type="number" id="price" formControlName="price" class="form-control" autocomplete="off" onkeypress="return event?.charCode !== 45">
+        <div *ngIf="addItemFormGroup.controls['price'].invalid && (addItemFormGroup.controls['price'].dirty || addItemFormGroup.controls['price'].touched)"
+             class="alert alert-danger">
+          <div *ngIf="addItemFormGroup.controls['price'].errors.required">
+            Field is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="deliveryEstimation" class="label-control">Receive date estimation</label>
+        <input type="text"
+               id="deliveryEstimation"
+               class="form-control"
+               formControlName="deliveryEstimation"
+               bsDatepicker
+               [bsConfig]="bsConfig"
+               [minDate]="minDate"
+               [placement]="'top'"
+               autocomplete="off"
+        >
+        <div *ngIf="addItemFormGroup.controls['deliveryEstimation'].invalid && (addItemFormGroup.controls['deliveryEstimation'].dirty)"
+             class="alert alert-danger">
+          <div *ngIf="addItemFormGroup.controls['deliveryEstimation'].errors.required">
+            Field is required
+          </div>
+          <div *ngIf="addItemFormGroup.controls['deliveryEstimation'].errors.bsDate">
+            Enter a valid date
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-around">
+        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="button" (click)="modalRef?.hide()" class="btn btn-secondary">Cancel</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

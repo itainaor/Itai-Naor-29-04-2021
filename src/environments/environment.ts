@@ -2,8 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import 'mimic';
+
 export const environment = {
-  production: false
+  production: false,
+  rateExchangeKey: 'd5c9d8991dca6284faa40de3f620ec26'
 };
 
 /*

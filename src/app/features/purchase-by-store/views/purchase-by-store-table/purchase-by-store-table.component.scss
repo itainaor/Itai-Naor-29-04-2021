@@ -1,0 +1,26 @@
+.purchase-by-store-table-wrapper{
+  .store-name-header{
+    width: 600px;
+  }
+  .quantity-header{
+    width: 300px;
+  }
+  .price-header{
+    width: 300px;
+  }
+
+  .ellipsis-text{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &.store-name{
+      max-width: 600px;
+    }
+    &.quantity{
+      max-width: 300px;
+    }
+    &.price{
+      max-width: 300px;
+    }
+  }
+}

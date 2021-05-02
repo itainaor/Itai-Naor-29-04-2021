@@ -1,0 +1,47 @@
+.purchase-by-item-table-wrapper{
+  .item-name-header{
+    width: 600px;
+  }
+  .store-header{
+    width: 400px;
+  }
+  .price-header{
+    width: 300px;
+  }
+  .date-header{
+    width: 300px;
+  }
+  .ellipsis-text{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &.item-name{
+      max-width: 600px;
+    }
+    &.store{
+      max-width: 400px;
+    }
+    &.price{
+      max-width: 300px;
+    }
+  }
+}
+
+::ng-deep
+.add-item-modal-wrapper{
+  .item-name-wrapper{
+    position: relative;
+  }
+
+  typeahead-container.dropdown-menu {
+    max-width: 100%;
+    max-height: 200px;
+    overflow-x: hidden;
+
+    .dropdown-item{
+      white-space: pre-wrap;
+    }
+  }
+}
+
+
